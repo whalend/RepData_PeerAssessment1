@@ -91,3 +91,21 @@ qplot(date, steps, data = act_nareplace %>% group_by(date), geom = "bar", stat =
 tot_steps_narep <- act_nareplace %>% group_by(date) %>% summarise(tot_steps = sum(steps))
 summary(tot_steps_narep)
 
+
+#For this part the `weekdays()` function may be of some help here. Use
+#the dataset with the filled-in missing values for this part.
+
+#1. Create a new factor variable in the dataset with two levels -- "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
+act_nareplace$weekday <- weekdays(act_nareplace$date)
+str(act_nareplace)
+
+act_nareplace$weekend <- act_nareplace$weekday=="Saturday" | act_nareplace$weekday=="Sunday"
+
+act_nareplace$weekend <- ifelse(act_nareplace$weekend==TRUE,"Weekend","Weekday")
+
+#1. Make a panel plot containing a time series plot (i.e. `type = "l"`) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was creating using **simulated data**:
+
+qplot(interval, steps, data = act_nareplace %>% group_by(interval,weekend) %>% summarise(steps = mean(steps)), facets = weekend~., geom = "line", ylab = "Number of steps")
+
+
+p <- act_nareplace %>% ggvis(~interval, ~steps) %>% group_by(interval, weekend) %>% summarise(steps=mean(steps, na.rm=TRUE)) %>% layer_lines(color=weekend)

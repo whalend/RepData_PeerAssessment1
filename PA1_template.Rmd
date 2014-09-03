@@ -1,3 +1,6 @@
+---
+output: html_document
+---
 # Reproducible Research: Peer Assessment 1
 
 
@@ -33,7 +36,7 @@ Median number of steps perday: `r med_steps`
 
 **1.** Make a time series plot (i.e. `type = "l"`) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
-```{r}
+```{r Plot average daily activity}
 qplot(interval, steps, data = activity %>% group_by(interval) %>% summarise(steps= mean(steps, na.rm=TRUE)), geom = "line", main = "Averge number of steps for 5 minute intervals")
 ```
 
